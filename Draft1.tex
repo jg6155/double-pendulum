@@ -2,6 +2,7 @@
 \usepackage{graphicx} % Required for inserting images
 \usepackage{amsmath}
 \usepackage [separate-uncertainty] {siunitx}
+\usepackage{gensymb}
 
 \title{Semester Project--Double Pendulum \\Computational Physics Fall 2023 \\Draft 1}
 \author{\textit{Robert Zhao, Jorge Gomez, Daniel Tanagho}}
@@ -15,18 +16,18 @@
 The purpose of this project is to examine the behavior of a double pendulum. This system appears simple at first glance, but the related equations of motion are complex enough that makes it impossible to solve analytically. However, it is possible to find a numerical solution using various integration techniques, which will help us visualize the behavior of this system and examine the motion.
 
 \section{Equations of Motion:}
-We'll start by deriving the equations of motion. The system is composed of two pendulum bobs of equal mass $m$. Bob 1 is attached by a string of length $l$ to a pivot point. Bob 2 is attached to Bob 1 by a string of equal length $l$. The easiest way to find the equations of motion is to use Lagrangian Dynamics. Such that the Lagrange Equation is (where $T$ is the Kinetic Energy, and $U$ is the Potential Energy):
+We'll start by deriving the equations of motion. The system is composed of two pendulum bobs of equal masses, $m$. Bob 1 is attached by a rigid inextensible rod of length $l$ to a frictionless pivot. Bob 2 is attached to Bob 1 by an identical rod. For simplicity, the system is restricted to move in 2 dimensions in the $x-z$ plane. The easiest way to find the equations of motion is to use Lagrangian Dynamics. Such that the Lagrange Equation is:
 \begin{equation}
     \mathcal{L} = T - U
 \end{equation}
-For this, we will need to identify the energy associated with each pendulum bob. For simplicity, we will set the zero-point of potential energy for each bob at its equilibrium point. And we will identify the $+\hat{z}$ direction as the direction of \textit{decreasing} potential energy. We can do so with impunity, so long as we respect the same coordinatization throughout our calculations. We find:
+Where $T$ and $U$ are the Kinetic and Potential Energies respectively. To implement Lagrange's Equation, we will need to identify the energy associated with each pendulum bob. For simplicity, we will set the zero-point of potential energy for each bob at its equilibrium point. And we will identify the $+\hat{z}$ direction as the direction of \textit{decreasing} potential energy. We can do so with impunity, so long as we respect the same coordinatization throughout our calculations. We find:
 \begin{align*}
 \begin{split}
     U_1 & = -mgh_1 = -mgl\cos(\theta_1) \\
     U_2 & = -mgh_2 = -mgl[\cos(\theta_1)+\cos(\theta_2)]
 \end{split}
 \end{align*}
-The Kinetic energy $K = mv^2/2$ is a bit trickier to find. But starting from writing the coordinates in the $x-z$ plane for each bob makes it much easier:
+The Kinetic energy $K = mv^2/2$ is a bit trickier to find. But starting by writing the coordinates in the $x-z$ plane for each bob makes it much easier:
 \begin{align*}
 \begin{split}
     x_1 & = l\sin(\theta_1) \\
@@ -99,7 +100,30 @@ After differentiating and rearranging, we finally obtain:
 \section{Total Energy and Stationary Points:}
 There's a quantity that is important to keep track of during our simulation, and that is the total energy of the system, or the Hamiltonian.
 \begin{equation}
-    \mathcal{H} = T + U = ml^2[\omega_1^2 + \frac{1}{2}\omega_2^2 + \omega_1\omega_2\cos(\theta_1-\theta_2)] + mgl(2\cos(\theta_1) + \cos(\theta_2))
+    \mathcal{H} = T + U = ml^2[\omega_1^2 + \frac{1}{2}\omega_2^2 + \omega_1\omega_2\cos(\theta_1-\theta_2)] - mgl(2\cos(\theta_1) + \cos(\theta_2))
 \end{equation}
+Notice that it only differs from the Lagrangian by a sign change in front of the Potential Energy terms. 
+\\We can easily convince ourselves that the total energy of the system is conserved as it evolves through time because those are the constraints we've imposed; there's no friction, there's no air drag, the rods are perfectly rigid. Hence, there's no dissipation.
+\\Based on this configuration, there are exactly four \textit{stationary points} where we expect the system to maintain equilibrium without perturbation. We can distinguish only one of these points as a \textit{stable} stationary point. You will have to imagine that, in the study of this simple system, the bobs are point masses and the rods in infinitesimally thin, such that they can overlap and occupy the same space. Basically, Quantum Mechanics doesn't apply here. Here are the stationary points:
+\\\textit{(\textbf{We are considering including figures of the equilibrium points at a later stage in the project.})}
+\begin{enumerate}
+    \item The two bobs are hanging downwards, $\theta_1 = \theta_2 = 0$. This is the only stable stationary point. That is to say, with a slight perturbation, the double-pendulum will continue to oscillate about that point.
+    \item The two aligned bobs are rotated by $180\degree$ upwards, i.e., $\theta_1 = \theta_2 = \pi$.
+    \item Bob 1 is hanging downwards, and Bob 2 is rotated by $180\degree$ upwards, i.e., $\theta_1 = 0$ and $\theta_2 = \pi$. (Imagine Bob 2 and the pivot overlap, and the two rods overlap.)
+    \item Bob 1 is rotated upwards by $180\degree$ and Bob 2 is hanging downwards from Bob 2, i.e., $\theta_1 = \pi$ and $\theta_2 = 0$. (Basically the mirror image of the latter configuration.)
+\end{enumerate}
+We can characterize the last three stationary points as unstable because a slight perturbation will send the double-pendulum into full swing, and the system may end up experiencing chaos rather than oscillate about the equilibrium.
+
+\section*{A note on the project / Game plan:}
+\textit{We will be using the equations from Page 400 in Newman for $\dot{\omega}_1$ and $\dot{\omega}_2$ (we are considering including the derivation) in order to integrate Equations (5) and (6) using the $4^{th}$ order Runge-Kutta method as well as the Leap Frog method. We anticipate that the latter will serve us better as it is symmetric under time-reversal and will maintain the energy conservation constraint that we have imposed.
+\\We anticipate that by Draft 2, we will have completed Part 2 of the project write-up (creating and testing the integrators) and began examining the chaos of the system, which is Part 3.
+\\We have some preliminary code in the Github repository listed below.
+\\Thank you for reading.}
+
+\section{Github Repository:}
+https://github.com/jg6155/double-pendulum.git
+
+
+
 
 \end{document}
