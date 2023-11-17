@@ -1,5 +1,6 @@
 import numpy as np 
 import matplotlib.pyplot as plt
+from animator import PendulumAnimator
 
 def W_Dot(W, Theta, t):
 	"""
@@ -67,6 +68,7 @@ def LeapFrog_Int():
 	W_first_full = W_i + h*W_Dot(W_first_half, Theta_first_half, 0.5*h)
 	Theta_first_full = Theta_i + 0.5*h*Theta_Dot(W_first_half, Theta_first_half, 0.5*h)
 
+	"""Leapfrog Integration Loop"""
 	for t in tpoints:
 		W_first_full += h*W_Dot(W_first_half, Theta_first_half, (t+0.5*h)) 
 		Theta_first_full += h*Theta_Dot(W_first_half, Theta_first_half, (t+0.5*h))
@@ -79,22 +81,48 @@ def LeapFrog_Int():
 		w1_points.append(W_first_full[0])
 		w2_points.append(W_first_full[1])
 
-	plt.plot(tpoints, theta1_points, 'b-', label = 'Theta 1')
-	plt.plot(tpoints, theta2_points, 'r-', label = 'Theta 2')
-	plt.plot(tpoints, w1_points, 'k-', label = 'W 1')
-	plt.plot(tpoints, w2_points, 'g-', label = 'W 2')
-	plt.legend(loc = 'best')
-	plt.show()
+	"""Plotting the Test Data"""
+	# plt.plot(tpoints, theta1_points, 'b-', label = r'$\theta_1$')
+	# plt.plot(tpoints, theta2_points, 'r-', label = r'$\theta_2$')
+	# plt.plot(tpoints, w1_points, 'k-', label = r'$\omega_1$')
+	# plt.plot(tpoints, w2_points, 'g-', label = r'$\omega_2$')
+	# plt.xlabel('Time (s)')
+	# plt.ylabel('Time-Dependent Variable')
+	# plt.legend(loc = 'best')
+	# plt.show()
 
+	return (theta1_points, theta2_points, w1_points, w2_points)
 
+theta1_points, theta2_points, w1_points, w2_points = LeapFrog_Int()
+theta1_points = np.array(theta1_points)
+theta2_points = np.array(theta2_points)
+w1_points = np.array(w1_points)
+w2_points = np.array(w2_points)
 
-if __name__ == "__main__":
-	LeapFrog_Int()
+def EnergyPlotter(theta1, theta2, w1, w2):
+	"""Constants"""
+	m = 1.0
+	g = 9.8
+	l = 0.4
+	ti = 0.0
+	tf = 10.0
+	N = 1000
+	h = (tf - ti)/N
+	tpoints = np.arange(ti, tf, h)
 
+	"""Total Energy"""
+	Energy = m*l**2*(w1**2 + 0.5*w2**2 + w1*w2*np.cos(theta1-theta2)) - m*g*l*(2*np.cos(theta1) + np.cos(theta2))
 
+	"""Total Energy Plot as a function of Time"""
+	plt.plot(tpoints, Energy, 'k-')
+	plt.xlabel('Time (s)')
+	plt.ylabel('Energy (Joules)')
+	plt.savefig('LeapFrog_Energy.png')
 
-
-
+EnergyPlotter(theta1_points, theta2_points, w1_points, w2_points)
+animator = PendulumAnimator()
+animator.set_data((theta1_points, theta2_points))
+animator.animate()
 
 
 
