@@ -9,12 +9,8 @@ Created on Fri Oct 27 19:33:14 2023
 # Input: length of string, g, initial theta_1, initial theta_2, time, intervals
 
 import numpy as np
-import matplotlib.pyplot as plt
 
-L = 1
-g = 9.8
-
-def position(L, g, theta_1, theta_2, t, N):
+def runge_kutta(L, g, theta_1, theta_2, t, N):
     a = 0.0
     b = t 
     # h is the time interval
@@ -26,6 +22,8 @@ def position(L, g, theta_1, theta_2, t, N):
     # Create two lists to store the angle degrees
     theta1_points = []
     theta2_points = []
+    w1_points = []
+    w2_points = []
     
     # initial velocity
     w1 = 0
@@ -47,25 +45,15 @@ def position(L, g, theta_1, theta_2, t, N):
     
         w1 += (k11 + 2*k21 + 2*k31 + k41)/6
         w2 += (k12 + 2*k22 + 2*k32 + k42)/6
+
+        #put it here because it's the change in theta1, theta2
+        w2_points.append(w1)
+        w1_points.append(w2)
     
         theta_1 += w1*h
         theta_2 += w2*h
-
     
-    plt.figure()    
-    plt.plot(tpoints, theta1_points, label = "theta_1")
-    plt.plot(tpoints, theta2_points, label = "theta_2")
-    plt.title("Position of double pendulum versusu time")
-    plt.xlabel("t")
-    plt.ylabel("degree of angle theta")
-    plt.legend()
-    txt1="\n The initial theta_1 is: " + str(theta_1)
-    txt2 ="\n The initial theta_2 is: " + str(theta_2)
-    plt.figtext(0.5, 0.01, txt1 + txt2, wrap=True, horizontalalignment='center', fontsize=12)
-    plt.show()
-    
-    return theta1_points
-
+    return theta1_points,theta2_points, w1_points, w2_points
 
 # define the two first-order differentiation equation
 # Equation for w1

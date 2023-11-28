@@ -13,7 +13,7 @@ interval = time*50
 initial_theta_1 = 30
 initial_theta_2 = 30
 
-def position(L, g, theta_1, theta_2, t, N):
+def runge_kutta(L, g, theta_1, theta_2, t, N):
     a = 0.0
     b = t 
     # h is the time interval
@@ -25,6 +25,7 @@ def position(L, g, theta_1, theta_2, t, N):
     # Create two lists to store the angle degrees
     theta1_points = []
     theta2_points = []
+    
     
     # initial velocity
     w1 = 0
@@ -46,22 +47,16 @@ def position(L, g, theta_1, theta_2, t, N):
     
         w1 += (k11 + 2*k21 + 2*k31 + k41)/6
         w2 += (k12 + 2*k22 + 2*k32 + k42)/6
-    
+
+        
+
         theta_1 += w1*h
         theta_2 += w2*h
 
+        
+
     
-    plt.figure()    
-    plt.plot(tpoints, theta1_points, label = "theta_1")
-    plt.plot(tpoints, theta2_points, label = "theta_2")
-    plt.title("Position of double pendulum versusu time")
-    plt.xlabel("t")
-    plt.ylabel("degree of angle theta")
-    plt.legend()
-   
-    plt.show()
-    
-    return theta1_points, theta2_points
+    return theta1_points, theta2_points, w1_points,
 
 
 # define the two first-order differentiation equation
@@ -82,7 +77,7 @@ def dp2(w1, w2, t, theta_1, theta_2):
     denom = 3 - np.cos(2*theta_1 - 2*theta_2)
     return numerator/denom
 
-theta1, theta2 = position(L, g, initial_theta_1*np.pi/180, initial_theta_2*np.pi/180, time, interval)
+theta1, theta2, w1, w2 = runge_kutta(L, g, initial_theta_1*np.pi/180, initial_theta_2*np.pi/180, time, interval)
 
 animator = PendulumAnimator()
 animator.set_data((theta1, theta2))
