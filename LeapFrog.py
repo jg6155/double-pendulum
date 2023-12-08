@@ -1,29 +1,28 @@
 import numpy as np 
 import matplotlib.pyplot as plt
-# from animator import PendulumAnimator
+from animator import PendulumAnimator
 
 m = 1.0
 g = 9.8
 l = 0.4
 ti = 0.0
 tf = 10.0
-N = 1000000
+N = 10000
 h = (tf - ti)/N
 tpoints = np.arange(ti, tf, h)
 
 def w1_dot(w1, w2, theta1, theta2):
-	w1_dot = (w1**2*np.sin(2*theta1 - 2*theta2) + 2*w2**2*np.sin(theta1 - theta2) + (g/l)*(np.sin(theta1 - 2*theta2) + 3*np.sin(theta1))) / (np.cos(2*theta1 - 2*theta2) - 3)
-	return w1_dot
+	return ((w1**2*np.sin(2*theta1 - 2*theta2) + 2*w2**2*np.sin(theta1 - theta2) + (g/l)*(np.sin(theta1 - 2*theta2) + 3*np.sin(theta1))) / (np.cos(2*theta1 - 2*theta2) - 3))
 
 
 def w2_dot(w1, w2, theta1, theta2):
-	w2_dot = (4*w1**2*np.sin(theta1 - theta2) + w2**2*np.sin(2*theta1 - 2*theta2) + 2*(g/l)*(np.sin(2*theta1 - theta2) - np.sin(theta2))) / (3 - np.cos(2*theta1 - 2*theta2))
-	return w2_dot
+	return ((4*w1**2*np.sin(theta1 - theta2) + w2**2*np.sin(2*theta1 - 2*theta2) + 2*(g/l)*(np.sin(2*theta1 - theta2) - np.sin(theta2))) / (3 - np.cos(2*theta1 - 2*theta2)))
+
 
 def LeapFrog_Int():
 	"""Initial Conditions"""
-	theta1_init = np.pi/2
-	theta2_init = np.pi/2
+	theta1_init = np.pi/10
+	theta2_init = np.pi/10
 	w1_init = 0.0
 	w2_init = 0.0 
 
@@ -76,6 +75,11 @@ def LeapFrog_Int():
 
 w1, w2, theta1, theta2 = LeapFrog_Int()
 
+# np.savetxt('w1_double.csv', w1, delimiter=',')
+# np.savetxt('w2_double.csv', w2, delimiter=',')
+# np.savetxt('theta1_double.csv', theta1, delimiter=',')
+# np.savetxt('theta2_double.csv', theta2, delimiter=',')
+
 # print(w1, w2, theta1, theta2, sep='\n')
 
 def Energy(w1, w2, theta1, theta2):
@@ -83,14 +87,16 @@ def Energy(w1, w2, theta1, theta2):
 
 E = Energy(w1, w1, theta1, theta2)
 
+# np.savetxt('E_double.csv', E, delimiter=',')
+
 plt.plot(tpoints, E, 'k-')
 plt.xlabel('Time (s)')
 plt.ylabel('Energy (Joules)')
 plt.show()
 
-# animator = PendulumAnimator()
-# animator.set_data((theta1, theta2))
-# animator.animate()
+animator = PendulumAnimator()
+animator.set_data((theta1, theta2))
+animator.animate()
 
 
 
