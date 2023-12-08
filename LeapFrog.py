@@ -88,7 +88,6 @@ plt.xlabel('Time (s)')
 plt.ylabel('Energy (Joules)')
 plt.show()
 
-# EnergyPlotter(w1, w2, theta1, theta2)
 # animator = PendulumAnimator()
 # animator.set_data((theta1, theta2))
 # animator.animate()
