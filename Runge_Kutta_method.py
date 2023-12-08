@@ -56,7 +56,7 @@ def runge_kutta(L, g, theta_1, theta_2, t, N):
         
 
     
-    return theta1_points, theta2_points, w1_points,
+    return theta1_points, theta2_points, w1_points, w2_points
 
 
 # define the two first-order differentiation equation
