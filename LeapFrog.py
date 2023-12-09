@@ -1,31 +1,20 @@
 import numpy as np 
 import matplotlib.pyplot as plt
 from animator import PendulumAnimator
+from DoublePendulum_Funcs import w1_dot, w2_dot, Energy
 
-m = 1.0
-g = 9.8
-l = 0.4
 ti = 0.0
-tf = 10.0
+tf = 1000.0
 N = 10000
 h = (tf - ti)/N
 tpoints = np.arange(ti, tf, h)
+"""Initial Conditions"""
+theta1_init = np.pi/2
+theta2_init = -np.pi/2
+w1_init = 0.0
+w2_init = 0.0 
 
-def w1_dot(w1, w2, theta1, theta2):
-	return ((w1**2*np.sin(2*theta1 - 2*theta2) + 2*w2**2*np.sin(theta1 - theta2) + (g/l)*(np.sin(theta1 - 2*theta2) + 3*np.sin(theta1))) / (np.cos(2*theta1 - 2*theta2) - 3))
-
-
-def w2_dot(w1, w2, theta1, theta2):
-	return ((4*w1**2*np.sin(theta1 - theta2) + w2**2*np.sin(2*theta1 - 2*theta2) + 2*(g/l)*(np.sin(2*theta1 - theta2) - np.sin(theta2))) / (3 - np.cos(2*theta1 - 2*theta2)))
-
-
-def LeapFrog_Int():
-	"""Initial Conditions"""
-	theta1_init = np.pi/10
-	theta2_init = np.pi/10
-	w1_init = 0.0
-	w2_init = 0.0 
-
+def LeapFrog_Int(w1_init, w2_init, theta1_init, theta2_init, h):
 	"""Arrays to store my values"""
 	w1 = np.zeros(N)
 	w2 = np.zeros(N)
@@ -73,30 +62,41 @@ def LeapFrog_Int():
 
 	return (w1, w2, theta1, theta2)
 
-w1, w2, theta1, theta2 = LeapFrog_Int()
+w1, w2, theta1, theta2 = LeapFrog_Int(w1_init, w2_init, theta1_init, theta2_init, h)
 
+# E = Energy(w1, w2, theta1, theta2)
+
+# print(theta1)
+
+# def Plotter(w1, w2, theta1, theta2, E):
+# 	plt.figure(1)
+# 	plt.plot(tpoints, theta1, 'b-', label = r'$\theta_1$')
+# 	plt.plot(tpoints, theta2, 'r-', label = r'$\theta_2$')
+# 	plt.plot(tpoints, w1, 'k-', label = r'$\omega_1$')
+# 	plt.plot(tpoints, w2, 'g-', label = r'$\omega_2$')
+# 	plt.xlabel('Time (s)')
+# 	plt.ylabel('Time-Dependent Variable')
+# 	plt.legend(loc = 'best')
+# 	plt.show()
+
+# 	plt.figure(2)
+# 	plt.plot(tpoints, E, 'k-')
+# 	plt.xlabel('Time (s)')
+# 	plt.ylabel('Energy (Joules)')
+# 	plt.show()
+
+# Plotter(w1, w2, theta1, theta2, E)
+
+"""Saving Data Into CSV files"""
 # np.savetxt('w1_double.csv', w1, delimiter=',')
 # np.savetxt('w2_double.csv', w2, delimiter=',')
 # np.savetxt('theta1_double.csv', theta1, delimiter=',')
 # np.savetxt('theta2_double.csv', theta2, delimiter=',')
-
-# print(w1, w2, theta1, theta2, sep='\n')
-
-def Energy(w1, w2, theta1, theta2):
-	return (m*l**2*(w1**2 + 0.5*w2**2 + w1*w2*np.cos(theta1-theta2)) - m*g*l*(2*np.cos(theta1) + np.cos(theta2)))
-
-E = Energy(w1, w1, theta1, theta2)
-
 # np.savetxt('E_double.csv', E, delimiter=',')
 
-plt.plot(tpoints, E, 'k-')
-plt.xlabel('Time (s)')
-plt.ylabel('Energy (Joules)')
-plt.show()
-
-animator = PendulumAnimator()
-animator.set_data((theta1, theta2))
-animator.animate()
+# animator = PendulumAnimator()
+# animator.set_data((theta1, theta2))
+# animator.animate()
 
 
 
