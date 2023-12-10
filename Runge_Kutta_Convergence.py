@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Nov 17 22:02:13 2023
+Created on Sat Dec  9 18:36:12 2023
 
 @author: zhaoyilin
 """
@@ -10,17 +10,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 from DoublePendulum_Funcs import w1_dot, w2_dot
 
-#Initial Conditions
 L = 0.4
 g = 9.8
-time = 100
+
+time = 10
 
 #The time steps should be less than 0.02s
-timestep = 0.01
+timestep = 0.05
 
-#Input the theta degrees in radians
-initial_theta_1 = np.pi/2
-initial_theta_2 = np.pi/2
+# theta should be in radians instead of degress
+initial_theta_1 = np.pi/4
+initial_theta_2 = np.pi/4
 
 def runge_kutta(L, g, theta_1, theta_2, t, N):
     a = 0.0
@@ -41,6 +41,7 @@ def runge_kutta(L, g, theta_1, theta_2, t, N):
     w1 = 0
     w2 = 0
     for t in tpoints:
+        
         k11 = h*w1_dot(w1, w2 ,theta_1, theta_2)
         k12 = h*w2_dot(w1, w2 ,theta_1, theta_2)
         k13 = h*dp3(w1)
@@ -63,13 +64,12 @@ def runge_kutta(L, g, theta_1, theta_2, t, N):
         k44 = h*dp4(w2 + k32)
         
         
-        #Update w1, w2, theta1 and theta2
         w1 += (k11 + 2*k21 + 2*k31 + k41)/6
         w2 += (k12 + 2*k22 + 2*k32 + k42)/6
         theta_1 += (k13 + 2*k23 + 2*k33 + k43)/6
         theta_2 += (k14 + 2*k24 + 2*k34 + k44)/6
         
-        #Record w1, w2, theta1 and theta2
+        
         w1_points.append(w1)
         w2_points.append(w2)
         theta1_points.append(theta_1)
@@ -83,43 +83,54 @@ def runge_kutta(L, g, theta_1, theta_2, t, N):
 def dp3(w1):
     return w1
 
-# Equation for theta2
+# 
 def dp4(w2):
     return w2
 
-# Method used to calculate total energy
-def energy(w_1, w_2, theta_1, theta_2):
-    total_en_list = []
-    T = 0
-    V = 0
-    m = 1
-    
-    # Number of Timesteps
-    interval = int(time/timestep)
-    
-    for i in np.arange(0, interval):
-        T = m*(L**2)*(w_1[i]**2 + 0.5*w_2[i]**2 + w_1[i]*w_2[i]*np.cos(theta_1[i] - theta_2[i]))
-        V = -m*g*L*(2*np.cos(theta_1[i]) + np.cos(theta_2[i]))
-        total_en = T + V
-        total_en_list.append(total_en)
-        
-    time_list = np.linspace(0, time, interval)
-    
-    # Make the plot
-    
-    fig = plt.figure(figsize = (7,4))
-    #plt.figure(figsize = (16,6))
-    plt.plot(time_list, total_en_list, label = r"Total Energy")
-    plt.title("Total Energy under RK method for 1000s")
-    plt.xlabel("time(s)")
-    plt.ylabel("Total Energy(J)")
-    plt.legend(loc = 'upper right')
-    txt=r"Under Condition of part (b): initial $\theta_1 = \theta_2= \pi/2$, initial $\omega_1 = \theta_2 = 0$, L = 0.4m, $g = 9.8m~s^{-2}$, m = 1kg "
-    fig.text(.5, .0001, txt, ha='center')
-    plt.tight_layout()
-    plt.show()
 
-    return total_en_list
 
-theta1, theta2, w1, w2,tpoints = runge_kutta(L, g, initial_theta_1, initial_theta_2, time, timestep)
-total_energy = energy(w1, w2, theta1, theta2)
+# Create lists to contain stepsizes and errors
+theta1_error = []
+theta2_error = [0]
+theta1_points = [0]
+step_points = []
+
+stepsize = timestep
+
+for i in np.arange(1,10,1):
+    # For each loops, the stepsize decreases by a factor of 2
+    stepsize = stepsize/2
+    
+    theta1_l,theta2_l, w1_points, w2_points, tpoints = runge_kutta(L, g, initial_theta_1, initial_theta_2, time, stepsize)
+
+    # Get the error by subtract the theta from the previous theta degree
+    error1 = np.abs(theta1_l[-1] - theta1_points[i-1])
+    
+    # Collect stepsize for each loop
+    step_points.append(stepsize)
+    
+    theta1_points.append(theta1_l[-1])
+    
+    # Collect the error for each loop
+    theta1_error.append(error1)
+    
+
+    
+# Simulation of the error changes
+y_points = []
+for i in step_points[1:]:
+    # We know that the error changes in the order of 4.
+    y_points.append((i**4*2000))
+
+# Make the plot
+plt.plot(step_points[1:], theta1_error[1:], label = "Convergence for RK method")
+plt.scatter(step_points[1:], theta1_error[1:])
+plt.plot(step_points[1:], y_points, label = r"$y = 2000x^4$")
+
+plt.title("Test the Convergence of Runge_Kutta method")
+plt.xlabel("time step(s)")
+plt.ylabel(r"error of $\theta$(radians)")
+plt.yscale('log')
+plt.xscale('log')
+plt.legend(loc = "upper left")
+plt.show()
