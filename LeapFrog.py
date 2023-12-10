@@ -32,9 +32,7 @@ from DoublePendulum_Funcs import w1_dot, w2_dot, Energy
 
 
 def LeapFrog(w1_init, w2_init, theta1_init, theta2_init, ti, tf, N):
-	ti = 0.0
-	tf = 10.0
-	N = 10000
+	## Time Step
 	h = (tf - ti)/N
 
 	## Arrays to store the values
