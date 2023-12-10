@@ -8,6 +8,7 @@ Created on Sat Dec  9 18:36:12 2023
 
 import numpy as np
 import matplotlib.pyplot as plt
+from DoublePendulum_Funcs import w1_dot, w2_dot
 
 L = 0.4
 g = 9.8
@@ -18,8 +19,8 @@ time = 10
 timestep = 0.05
 
 # theta should be in radians instead of degress
-initial_theta_1 = np.pi/10
-initial_theta_2 = np.pi/10
+initial_theta_1 = np.pi/4
+initial_theta_2 = np.pi/4
 
 def runge_kutta(L, g, theta_1, theta_2, t, N):
     a = 0.0
@@ -41,24 +42,24 @@ def runge_kutta(L, g, theta_1, theta_2, t, N):
     w2 = 0
     for t in tpoints:
         
-        k11 = h*dp1(w1, w2 ,t, theta_1, theta_2)
-        k12 = h*dp2(w1, w2 ,t, theta_1, theta_2)
+        k11 = h*w1_dot(w1, w2 ,theta_1, theta_2)
+        k12 = h*w2_dot(w1, w2 ,theta_1, theta_2)
         k13 = h*dp3(w1)
         k14 = h*dp4(w2)
         
         
-        k21 = h*dp1(w1 + 0.5*k11, w2 + 0.5*k12, t + 0.5*h, theta_1 + 0.5*k13, theta_2 + 0.5*k14)
-        k22 = h*dp2(w1 + 0.5*k11, w2 + 0.5*k12, t + 0.5*h, theta_1 + 0.5*k13, theta_2 + 0.5*k14 )
+        k21 = h*w1_dot(w1 + 0.5*k11, w2 + 0.5*k12, theta_1 + 0.5*k13, theta_2 + 0.5*k14)
+        k22 = h*w2_dot(w1 + 0.5*k11, w2 + 0.5*k12, theta_1 + 0.5*k13, theta_2 + 0.5*k14 )
         k23 = h*dp3(w1 + 0.5*k11)
         k24 = h*dp4(w2 + 0.5*k12)
     
-        k31 = h*dp1(w1 + 0.5*k21, w2 + 0.5*k22, t + 0.5*h, theta_1 + 0.5*k23, theta_2 + 0.5*k24)
-        k32 = h*dp2(w1 + 0.5*k21, w2 + 0.5*k22, t + 0.5*h, theta_1 + 0.5*k23, theta_2 + 0.5*k24)
+        k31 = h*w1_dot(w1 + 0.5*k21, w2 + 0.5*k22, theta_1 + 0.5*k23, theta_2 + 0.5*k24)
+        k32 = h*w2_dot(w1 + 0.5*k21, w2 + 0.5*k22, theta_1 + 0.5*k23, theta_2 + 0.5*k24)
         k33 = h*dp3(w1 + 0.5*k21)
         k34 = h*dp4(w2 + 0.5*k22)
     
-        k41 = h*dp1(w1 + k31, w2 + k32, t + h, theta_1 + k33, theta_2 + k34)
-        k42 = h*dp2(w1 + k31, w2 + k32, t + h, theta_1 + k33, theta_2 + k34)
+        k41 = h*w1_dot(w1 + k31, w2 + k32, theta_1 + k33, theta_2 + k34)
+        k42 = h*w2_dot(w1 + k31, w2 + k32, theta_1 + k33, theta_2 + k34)
         k43 = h*dp3(w1 + k31)
         k44 = h*dp4(w2 + k32)
         
@@ -77,27 +78,6 @@ def runge_kutta(L, g, theta_1, theta_2, t, N):
     
     return theta1_points,theta2_points, w1_points, w2_points, tpoints
 
-# define the two first-order differentiation equation
-# Equation for w1
-def dp1(w1, w2, t, theta_1, theta_2):
-    g = 9.8
-    L = 0.4
-    w1_term = w1**2*(np.sin(2*theta_1 - 2*theta_2))
-    w2_term = 2*w2**2*np.sin(theta_1 - theta_2)
-    ###
-    numerator = w1_term*(-1) - w2_term - (g/L)*(np.sin(theta_1 - 2*theta_2) + 3*np.sin(theta_1))
-    denom = 3 - np.cos(2*theta_1 - 2*theta_2)
-    return numerator/denom
-
-# Equation for w2
-def dp2(w1, w2, t, theta_1, theta_2):
-    g = 9.8
-    L = 0.4
-    w1_term = 4*w1**2*(np.sin(theta_1 - theta_2))
-    w2_term = w2**2*(np.sin(2*theta_1 - 2*theta_2))
-    numerator = w1_term + w2_term + (2*g/L)*(np.sin(2*theta_1 - theta_2) - np.sin(theta_2))
-    denom = 3 - np.cos(2*theta_1 - 2*theta_2)
-    return numerator/denom
 
 # Equation for theta1
 def dp3(w1):
