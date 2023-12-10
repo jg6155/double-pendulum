@@ -25,15 +25,15 @@ theta2 = array of values for the position of the lower bob
 ----------------------------------------------------------------------
 
 """
-
 import numpy as np 
 import matplotlib.pyplot as plt
 from DoublePendulum_Funcs import w1_dot, w2_dot, Energy
 
 
-def LeapFrog(w1_init, w2_init, theta1_init, theta2_init, ti, tf, N):
+def LeapFrog_Int(w1_init, w2_init, theta1_init, theta2_init, ti, tf, N):
 	## Time Step
 	h = (tf - ti)/N
+	tpoints = np.arange(ti, tf, h)
 
 	## Arrays to store the values
 	w1 = np.zeros(N)
@@ -70,4 +70,7 @@ def LeapFrog(w1_init, w2_init, theta1_init, theta2_init, ti, tf, N):
 		theta1_halves[i+1] = theta1_halves[i] + h*w1[i+1]
 		theta2_halves[i+1] = theta2_halves[i] + h*w2[i+1]
 
-	return (w1, w2, theta1, theta2)
+	return (w1, w2, theta1, theta2, tpoints)
+
+
+
