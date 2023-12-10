@@ -1,9 +1,42 @@
+"""
+Author: Daniel E. Tanagho
+-------------------------
+This LeapFrog function integrates the four 1-st Order simultaneous ODEs
+for the double pendulum problem.
+----------------------------------------------------------------------
+Arguments:
+----------
+w1_init : initial angular velocity for upper pendulum bob
+w2_init : initial angular velocity for lower pendulum bob
+theta1_init : initial position for upper pendulum bob
+theta2_init : initial position for lower pendulum bob
+(All angles are measured in radians.)
+
+ti = initial time
+tf = final time
+N = number of intervals between ti and tf
+----------------------------------------------------------------------
+Output:
+-------
+w1 = array of values for the angular velocity of upper bob
+w2 = array of values for the angular velocity of lower bob
+theta1 = array of values for the position of the upper bob
+theta2 = array of values for the position of the lower bob
+----------------------------------------------------------------------
+
+"""
+
 import numpy as np 
 import matplotlib.pyplot as plt
 from DoublePendulum_Funcs import w1_dot, w2_dot, Energy
 
 
-def LeapFrog(w1_init, w2_init, theta1_init, theta2_init, h):
+def LeapFrog(w1_init, w2_init, theta1_init, theta2_init, ti, tf, N):
+	ti = 0.0
+	tf = 10.0
+	N = 10000
+	h = (tf - ti)/N
+
 	## Arrays to store the values
 	w1 = np.zeros(N)
 	w2 = np.zeros(N)
@@ -40,11 +73,3 @@ def LeapFrog(w1_init, w2_init, theta1_init, theta2_init, h):
 		theta2_halves[i+1] = theta2_halves[i] + h*w2[i+1]
 
 	return (w1, w2, theta1, theta2)
-
-
-
-
-
-
-
-
