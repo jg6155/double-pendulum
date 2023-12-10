@@ -11,24 +11,23 @@ Time measured in seconds
 ----------------------------------------------------------------------
 Arguments:
 ----------
-w1_init : initial angular velocity for upper pendulum bob
-w2_init : initial angular velocity for lower pendulum bob
-theta1_init : initial position for upper pendulum bob
-theta2_init : initial position for lower pendulum bob
-ti = initial time
-tf = final time
-N = number of intervals between ti and tf
+w1_init : initial angular velocity for upper pendulum bob (rad/s)
+w2_init : initial angular velocity for lower pendulum bob (rad/s)
+theta1_init : initial position for upper pendulum bob (rad)
+theta2_init : initial position for lower pendulum bob (rad)
+ti = initial time (s)
+tf = final time (s)
+N = number of intervals between ti and tf (Unitless)
 ----------------------------------------------------------------------
 Output:
 -------
-w1 = array of values for the angular velocity of upper bob
-w2 = array of values for the angular velocity of lower bob
-theta1 = array of values for the position of the upper bob
-theta2 = array of values for the position of the lower bob
+w1 = array of values for the angular velocity of upper bob (rad/s)
+w2 = array of values for the angular velocity of lower bob (rad/s)
+theta1 = array of values for the position of the upper bob (rad)
+theta2 = array of values for the position of the lower bob (rad)
 tpoints = array of time points of equal size corresponding to 
-		  the coordiantes
+		  the coordiantes (s)
 ----------------------------------------------------------------------
-
 """
 import numpy as np 
 import matplotlib.pyplot as plt
