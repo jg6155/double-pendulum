@@ -4,14 +4,17 @@ Author: Daniel E. Tanagho
 This LeapFrog function integrates the four 1-st Order simultaneous ODEs
 for the double pendulum problem.
 ----------------------------------------------------------------------
+Units:
+------
+Angles measured in radians
+Time measured in seconds
+----------------------------------------------------------------------
 Arguments:
 ----------
 w1_init : initial angular velocity for upper pendulum bob
 w2_init : initial angular velocity for lower pendulum bob
 theta1_init : initial position for upper pendulum bob
 theta2_init : initial position for lower pendulum bob
-(All angles are measured in radians.)
-
 ti = initial time
 tf = final time
 N = number of intervals between ti and tf
@@ -22,6 +25,8 @@ w1 = array of values for the angular velocity of upper bob
 w2 = array of values for the angular velocity of lower bob
 theta1 = array of values for the position of the upper bob
 theta2 = array of values for the position of the lower bob
+tpoints = array of time points of equal size corresponding to 
+		  the coordiantes
 ----------------------------------------------------------------------
 
 """
