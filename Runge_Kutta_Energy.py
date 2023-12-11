@@ -8,7 +8,7 @@ Created on Fri Nov 17 22:02:13 2023
 
 import numpy as np
 import matplotlib.pyplot as plt
-from DoublePendulum_Funcs import w1_dot, w2_dot, L, g, m
+from DoublePendulum_Funcs import w1_dot, w2_dot, g, m
 from Runge_Kutta_method import runge_kutta
 
 
