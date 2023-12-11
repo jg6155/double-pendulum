@@ -1,3 +1,26 @@
+"""
+Author: Daniel E. Tanagho
+-------------------------
+This file contains all the double pendulum constants:
+-----------------------------------------------------
+m (mass of pendulum bobs) (kg)
+g (gravitational acceleration) (m/s^2)
+l (length of pendulum rods) (m)
+
+As well as the functions for the two 1-st order ODEs and the Total Energy:
+--------------------------------------------------------------------------
+w1_dot: Time derivative of the upper bob's angular velocity (rad/s^2)
+w2_dot: Time derivative of the lower bob's angular velocity (rad/s^2)
+Energy: Total Energy of the system (Joules)
+
+Arguments:
+----------
+w1 = array of values for the angular velocity of upper bob (rad/s)
+w2 = array of values for the angular velocity of lower bob (rad/s)
+theta1 = array of values for the position of the upper bob (rad)
+theta2 = array of values for the position of the lower bob (rad)
+--------------------------------------------------------------------------
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 
