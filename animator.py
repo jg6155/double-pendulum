@@ -28,11 +28,11 @@ class PendulumAnimator:
         plt.show()
 
 # Generating test data
-t = np.linspace(0, 10, 200)
-theta1_vals = np.pi/4 * np.sin(t)
-theta2_vals = np.pi/4 * np.sin(t + np.pi/8)  # slightly out of phase with the first pendulum
+#t = np.linspace(0, 10, 200)
+#theta1_vals = np.pi/4 * np.sin(t)
+#theta2_vals = np.pi/4 * np.sin(t + np.pi/8)  # slightly out of phase with the first pendulum
 
 # Using the animator
-animator = PendulumAnimator()
-animator.set_data((theta1_vals, theta2_vals))
-animator.animate()
+#animator = PendulumAnimator()
+#animator.set_data((theta1_vals, theta2_vals))
+#animator.animate()
