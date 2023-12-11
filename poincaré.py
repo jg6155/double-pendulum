@@ -98,20 +98,30 @@ class Poincare:
 
 # Example usage
 poincare = Poincare(L=0.4, g=9.8, time=100, interval=5000, num_nearby_points=10, epsilon=0.1)
-epsilon = .1
-# stationary_points = [
-#     (0, 0, 0, 0),
-#     (np.pi , 0, 0, 0),
-#     (np.pi , np.pi, 0, 0)
-# ]
-# poincare.analyze_trajectories(stationary_points)
+epsilon = .05
+stationary_points = [
+    (0+epsilon, 0+epsilon, 0, 0),
+    (np.pi +epsilon, 0+epsilon, 0, 0),
+    (np.pi +epsilon, np.pi+epsilon, 0, 0)
+]
+#poincare.analyze_trajectories(stationary_points)
 
 initial_conditions_sets = [
     (0 + epsilon, 0, 0, 0),  # Both pendulums slightly perturbed from hanging down
+    (-0.19, -0.06, 0.1, 0.1),
+    (-0.19, 0.06, 0.1, 0.1),
+    (0.06, -.19, 0.1, 0.1),
     (np.pi + epsilon, 0, 0, 0),  # One pendulum inverted, the other hanging down
-    (np.pi + epsilon, np.pi + epsilon, 0, 0)  # Both pendulums slightly perturbed from being inverted
+    (-3.14, -0.32, 0.1, 0.1),
+    (-3.14, -0.19, 0.1, 0.1),
+    (-3.14, -0.06, 0.1, 0.1),
+    (np.pi + epsilon, np.pi + epsilon, 0, 0),  # Both pendulums slightly perturbed from being inverted
+    (-3.14, -3.14, 0.1, 0.1),
+    (-3.14, -3.01, 0.1, 0.1),
+    (-3.14, -2.89, 0.1, 0.1)
 ]
 
 # Generate Poincaré sections for each set of initial conditions
 for ic in initial_conditions_sets:
     poincare.generate_poincare_section(ic)
+    pass
