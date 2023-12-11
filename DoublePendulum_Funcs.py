@@ -26,6 +26,7 @@ import matplotlib.pyplot as plt
 
 m = 1.0
 g = 9.8
+L = 0.4
 l = 0.4
 
 def w1_dot(w1, w2, theta1, theta2):
