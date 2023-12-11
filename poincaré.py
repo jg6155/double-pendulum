@@ -100,11 +100,11 @@ class Poincare:
 poincare = Poincare(L=0.4, g=9.8, time=100, interval=5000, num_nearby_points=10, epsilon=0.1)
 epsilon = .05
 stationary_points = [
-    (0+epsilon, 0+epsilon, 0, 0),
-    (np.pi +epsilon, 0+epsilon, 0, 0),
-    (np.pi +epsilon, np.pi+epsilon, 0, 0)
+    (0+epsilon, 0, 0, 0),
+    (np.pi +epsilon, 0, 0, 0),
+    ( 0, np.pi+epsilon, 0, 0)
 ]
-#poincare.analyze_trajectories(stationary_points)
+poincare.analyze_trajectories(stationary_points)
 
 initial_conditions_sets = [
     (0 + epsilon, 0, 0, 0),  # Both pendulums slightly perturbed from hanging down
@@ -126,8 +126,9 @@ from animator import PendulumAnimator
 
 # Generate Poincaré sections for each set of initial conditions
 for ic in initial_conditions_sets:
-    poincare.generate_poincare_section(ic)
+    #poincare.generate_poincare_section(ic)
     # theta1, theta2, _, _ = poincare.run_simulation(ic)
     # animate = PendulumAnimator()
     # animate.set_data((theta1,theta2))
     # animate.animate()
+    pass
