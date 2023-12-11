@@ -1,12 +1,13 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from animator import PendulumAnimator
+#from animator import PendulumAnimator
 from DoublePendulum_Funcs import w1_dot, w2_dot
 
+
 #Initial Conditions
-L = 0.4
-g = 9.8
+#L = 0.4
+#g = 9.8
 time = 100
 
 #The time steps should be less than 0.02s
@@ -94,3 +95,4 @@ def dp4(w2):
 #animator = PendulumAnimator()
 #animator.set_data((theta1, theta2))
 #animator.animate()
+
