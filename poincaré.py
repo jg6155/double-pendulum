@@ -115,13 +115,19 @@ initial_conditions_sets = [
     (-3.14, -0.32, 0.1, 0.1),
     (-3.14, -0.19, 0.1, 0.1),
     (-3.14, -0.06, 0.1, 0.1),
-    (np.pi + epsilon, np.pi + epsilon, 0, 0),  # Both pendulums slightly perturbed from being inverted
-    (-3.14, -3.14, 0.1, 0.1),
-    (-3.14, -3.01, 0.1, 0.1),
-    (-3.14, -2.89, 0.1, 0.1)
+    (0, np.pi + epsilon, 0, 0),  # Both pendulums slightly perturbed from being inverted
+    (0.32, 3.14, 0.1, 0.1),
+    (0.19, 3.14, 0.1, 0.1),
+    (0.06, 3.14, 0.1, 0.1)
 ]
+from animator import PendulumAnimator
+
+
 
 # Generate Poincaré sections for each set of initial conditions
 for ic in initial_conditions_sets:
     poincare.generate_poincare_section(ic)
-    pass
+    # theta1, theta2, _, _ = poincare.run_simulation(ic)
+    # animate = PendulumAnimator()
+    # animate.set_data((theta1,theta2))
+    # animate.animate()
